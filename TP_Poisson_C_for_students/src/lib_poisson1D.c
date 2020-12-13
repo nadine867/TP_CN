@@ -11,21 +11,21 @@ for (jj=0;jj<(*lab);jj++){
     kk = 6*jj;
 
      switch(jj) {
- case 0: 
+ /*case 0: 
             for(ii=0; ii<(*la) ; ii++){
-           AB[kk+ii]=0.0;}break;
+           AB[kk+ii]=0.0;}break;*/
            
- case 1:  
+ case 0:  
          
               for(ii=0; ii<(*la) ; ii++){
            AB[kk+ii]=-1.0;
            }break;
 
- case 2:   
+ case 1:   
             for(ii=0; ii<(*la) ; ii++){
            AB[kk+ii]=2.0;
            }break;
-case 3: 
+ case 2: 
           for(ii=0; ii<(*la) ; ii++){
            AB[kk+ii]=-1.0;
            }break; 
@@ -33,7 +33,7 @@ case 3:
 
 }
 }
-AB[6]=0.0;
+AB[0]=0.0;
 AB[(*lab)*(*la)-1]=0.0;
 
 }
@@ -43,15 +43,16 @@ void set_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, int *kv){
     kk = jj*(*lab);
     if ( *kv>=0){
       for (ii=0;ii< *kv;ii++){
-	AB[kk+ii]=0.0;
+	//AB[kk+ii]=0.0;
+ 	AB[kk+ ii]=-1.0;
       }
     }
-    AB[kk+ *kv]=-1.0;
-    AB[kk+ *kv+1]=2.0;
-    AB[kk+ *kv+2]=-1.0;
+    AB[kk+ *kv]=2.0;
+    AB[kk+ *kv+1]=-1.0;
+    //AB[kk+ *kv+2]=-1.0;
   }
-  AB[0]=0.0;
-  if (*kv == 1) {AB[1]=0;} 
+  //AB[0]=0.0;
+  if (*kv == 1) {AB[0]=0;} 
   
   AB[(*lab)*(*la)-1]=0.0;
 }
