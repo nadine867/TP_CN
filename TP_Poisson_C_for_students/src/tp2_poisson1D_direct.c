@@ -43,7 +43,7 @@ int main(int argc,char *argv[])
   kv=1;
   ku=1;
   kl=1;
-  lab=kv+kl+ku+1;
+  lab=kv+kl+ku; //+1;
 
   AB = (double *) malloc(sizeof(double)*lab*la);
 
@@ -56,10 +56,10 @@ int main(int argc,char *argv[])
 
   if (row == 1){ // LAPACK_ROW_MAJOR
     set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
-    //write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB_row.dat");
+    write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB_row.dat");
     
-    info = LAPACKE_dgbsv(LAPACK_ROW_MAJOR,la, kl, ku, NRHS, AB, la, ipiv, RHS, NRHS); 
-   /* cblas_dgbmv(LAPACK_ROW_MAJOR, CblasNoTrans, lab, la, kl, ku, 1.0, AB, la, EX_SOL,1,0.0, RHS, 1);*/
+   /* info = LAPACKE_dgbsv(LAPACK_ROW_MAJOR,la, kl, ku, NRHS, AB, la, ipiv, RHS, NRHS); 
+    cblas_dgbmv(CblasColMajor, CblasTrans, la, lab, kl, ku, 1.0, AB, la, EX_SOL,1,0.0, RHS, 1);*/
 
   } 
   else { // LAPACK_COL_MAJOR
@@ -67,7 +67,7 @@ int main(int argc,char *argv[])
      write_GB_operator_colMajor_poisson1D(AB, &lab, &la, "AB_col.dat");
 
     info = LAPACKE_dgbsv(LAPACK_COL_MAJOR,la, kl, ku, NRHS, AB, lab, ipiv, RHS, la);
-    cblas_dgbmv(LAPACK_COL_MAJOR, CblasNoTrans, lab, la, kl, ku, 1.0, AB, lab, EX_SOL,1,0.0, RHS, 1);
+    cblas_dgbmv(CblasColMajor, CblasNoTrans,la,la,kl,ku, 1.0, AB,lab, EX_SOL,1,0.0, RHS, 1);
 
 
   }    
@@ -76,7 +76,7 @@ int main(int argc,char *argv[])
   printf("\n INFO DGBSV = %d\n",info);
 
   write_xy(RHS, X,&la, "SOL.dat");
-  write_vec(RHS, &la, "RHS.dat");
+ // write_vec(RHS, &la, "RHS.dat");
 
   /* Relative residual */
   temp = cblas_ddot(la, RHS, 1, RHS,1);
